@@ -1,0 +1,27 @@
+{
+  "name": "co-emmitter",
+  "version": "0.0.1",
+  "description": "wrapper to eventemmiter",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cereceres/co-emmitter.git"
+  },
+  "keywords": [
+    "co",
+    "event",
+    "emmitter"
+  ],
+  "author": "Jesus Cereceres",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cereceres/co-emmitter/issues"
+  },
+  "homepage": "https://github.com/Cereceres/co-emmitter#readme",
+  "dependencies": {
+    "co": "^4.6.0"
+  }
+}
