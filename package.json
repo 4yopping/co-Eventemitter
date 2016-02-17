@@ -1,12 +1,14 @@
 {
   "name": "co-eventemitter",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "wrapper to co and Eventemitter",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "co": "^4.6.0"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "mocha test/test.js"
