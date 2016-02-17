@@ -1,12 +1,8 @@
-# co-emmitter
-
-<a href="http://4yopping.com">
-    <img src="http://4yopping.com/4yopping.png" alt="4yopping Logo"
-         title="4yopping Logo" align="right" width="120px" height="125px" />
-</a>
+# co-eventemitter
 
 
-co-event for JavaScript
+
+co-eventemitter for JavaScript
 
 # Installing
 
@@ -73,5 +69,17 @@ npm docs
 ```
 
 
-## License
-This projects and it's consequent projects, modules and connections will not be under any open source license until the 4yopping CTO communicates the contrary in a formal way.
+## Contributing
+In lieu of a formal style guide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code.  For any bugs report please contact to me via e-mail: cereceres@ciencias.unam.mx.
+
+## Licence
+The MIT License (MIT)
+
+Copyright (c) 2015 Jesús Edel Cereceres with Andrés González and Marco Godínez as collaborators, 4yopping and all the related trademarks.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
