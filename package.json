@@ -1,6 +1,6 @@
 {
-  "name": "co-Eventemitter",
-  "version": "1.0.0",
+  "name": "co-eventemitter",
+  "version": "0.0.2",
   "description": "wrapper to co and Eventemitter",
   "main": "index.js",
   "directories": {

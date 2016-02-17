@@ -11,14 +11,14 @@ co-event for JavaScript
 # Installing
 
 ```bash
-$ npm install co-event
+$ npm install co-eventemitter
 ```
 
 # Getting starter
 
 ```js
 
-let CoEvent = require( 'co-event' )
+let CoEvent = require( 'co-eventemitter' )
 let coEvent = new CoEvent()
 ```
 # Usage
