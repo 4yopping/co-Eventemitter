@@ -1,5 +1,7 @@
-# co-eventemitter
 
+
+# co-eventemitter
+[![Build Status](https://travis-ci.org/Cereceres/co-Eventemitter.svg?branch=master)](https://travis-ci.org/Cereceres/co-Eventemitter)
 
 
 co-eventemitter for JavaScript
