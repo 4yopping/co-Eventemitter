@@ -51,7 +51,7 @@ let CoEvent = function ( ctx ) {
           /**The old generators are removed*/
         this.emitter.removeAllListeners( event )
         let arrayOfeventHandlerGen = this.events[ event ].eventHandlerGen
-        return this.emitter.addListener( event, function ( arg, res, rej ) {
+        this.emitter.addListener( event, function ( arg, res, rej ) {
           co( chaining( arg, arrayOfeventHandlerGen, 0 ) )
             .then( function ( ) {
               /**The promse es resolved*/
@@ -63,6 +63,7 @@ let CoEvent = function ( ctx ) {
               rej( err )
             } )
         } )
+        return this
       }
       /**
        * @param {String} event {Array} of generator to be used, can be too onle one generator
