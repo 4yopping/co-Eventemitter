@@ -24,7 +24,7 @@ let CoEvent = function ( ctx ) {
     /**
      *  EventEmitter is instanced and added to object
      */
-    this.emmitter = new EventEmitter( )
+    this.emitter = new EventEmitter( )
     this.events = {}
       /**
        *  ctx to be used in every generator
