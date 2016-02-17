@@ -41,9 +41,11 @@ let gen2 = function* ( arg ) {
   assert.equal( res, '54' )
   assert.equal.deep( arg, {a:3} )
 }
-coEvent.on( 'test', gen1, gen2 )
-coEvent.emit( 'test',{a:3})
-// every generator is called with arg={a:3}
+coEvent.on( 'test', gen1, gen2 ) // returns itself, you can pass as many generators as you need queue
+coEvent.emit( 'test',{a:3}) // return a promise that is resolved when every generator is finish
+// every error is catched and the promise is rejected with that error. Also error event is amitted when this 
+// error is catched
+// every generator is called with arg={a:3} 
 
 assert.equal( count,2 )
 // count is equal to generator number
@@ -60,14 +62,6 @@ Running the tests
 
 ```bash
 npm test
-```
-
-
-## Documentation
-Run task
-
-```bash
-npm docs
 ```
 
 
