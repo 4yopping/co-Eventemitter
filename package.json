@@ -1,29 +1,29 @@
 {
-  "name": "co-event",
-  "version": "0.0.1",
-  "description": "wrapper to EventEmitter using co",
+  "name": "co-Eventemitter",
+  "version": "1.0.0",
+  "description": "wrapper to co and Eventemitter",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {},
   "scripts": {
     "test": "mocha test/test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cereceres/co-event.git"
+    "url": "git+https://github.com/Cereceres/co-Eventemitter.git"
   },
   "keywords": [
     "co",
-    "EventEmitter",
-    "emitter",
     "event",
-    "generatorss"
+    "generators"
   ],
   "author": "Jesus Cereceres",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Cereceres/co-event/issues"
+    "url": "https://github.com/Cereceres/co-Eventemitter/issues"
   },
-  "homepage": "https://github.com/Cereceres/co-event#readme",
-  "dependencies": {
-    "co": "^4.6.0"
-  }
+  "homepage": "https://github.com/Cereceres/co-Eventemitter/#readme"
 }

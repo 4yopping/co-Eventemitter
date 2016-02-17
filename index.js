@@ -49,9 +49,9 @@ let CoEvent = function ( ctx ) {
         this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen
           .concat( eventHandler )
           /**The old generators are removed*/
-        this.emmitter.removeAllListeners( event )
+        this.emitter.removeAllListeners( event )
         let arrayOfeventHandlerGen = this.events[ event ].eventHandlerGen
-        return this.emmitter.addListener( event, function ( arg, res, rej ) {
+        return this.emitter.addListener( event, function ( arg, res, rej ) {
           co( chaining( arg, arrayOfeventHandlerGen, 0 ) )
             .then( function ( ) {
               /**The promse es resolved*/
@@ -59,7 +59,7 @@ let CoEvent = function ( ctx ) {
             } )
             .catch( function ( err ) {
               /**If there are a error error event is ammited and promise es rejected*/
-              _this.emmitter.emit( 'error', err )
+              _this.emitter.emit( 'error', err )
               rej( err )
             } )
         } )
@@ -76,8 +76,8 @@ let CoEvent = function ( ctx ) {
         ]
         this.events[ event ].eventHandlerFun = funBuilder( this.events[ event ]
           .eventHandlerGen )
-        this.emmitter.removeAllListeners( event )
-        this.emmitter.once( event, this.events[ event ].eventHandlerFun )
+        this.emitter.removeAllListeners( event )
+        this.emitter.once( event, this.events[ event ].eventHandlerFun )
       }
       /**
        * @param {String} event {Obejct} to be serd the listener
@@ -89,7 +89,7 @@ let CoEvent = function ( ctx ) {
         arg = arguments.length > 2 ?
           slice.call( arguments, 1 ) : [ arg ];
         return new Promise( function ( resolve, reject ) {
-          _this.emmitter.emit( _event, arg, resolve, reject )
+          _this.emitter.emit( _event, arg, resolve, reject )
         } );
       }
       /**
