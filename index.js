@@ -87,9 +87,9 @@ let CoEvent = function ( ctx ) {
         this.emitter.once( event, this.events[ event ].eventHandlerFun )
       }
       /**
-       * @param {String} event {Obejct} arg to be send the listener
+       * @param {String} _event to be emitted {Array} arg to be send the listener
        * @return {Promise} to be resolved when every iterator finish or rejected
-       * if a error happen
+       * if a error is catched
        * @api public
        */
     this.emit = function ( _event, arg ) {
