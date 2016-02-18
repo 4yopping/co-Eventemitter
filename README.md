@@ -69,7 +69,7 @@ To instance the co-eventemitter you can pass a thisArg object what will be passe
 #### `co-eventemitter.on(String,Generator[,Generator...])`
 This method added the Generators passed to event Handler of event given(String). Returns itself.
 
-#### `co-eventemitter.on(String,Generator[,Generator...])`
+#### `co-eventemitter.once(String,Generator[,Generator...])`
 This method added the Generators passed to event Handler of event given(String) to be emitted only one time. Returns irself.
 
 #### `co-eventemitter.emit(String,Object[,Object...])`
