@@ -17,7 +17,8 @@ $ npm install co-eventemitter
 ```js
 
 let CoEvent = require( 'co-eventemitter' )
-let coEvent = new CoEvent()
+let coEvent = new CoEvent() // you can pass a object to co-eventemitter constructor
+// that will be used or passed as thisArg to every generator.
 ```
 # Usage
 
@@ -26,6 +27,10 @@ Create
 ```js
 //the generator are called with a arg and next, what is the next generator
 let gen1 = function* ( arg, next ) {
+  // every generator is evaluated with the arguments
+  // passed when the event was emitted and the last
+  // param is the next generator in the array listener
+  // or handler event.
   count++
   // every generator is wrapper with co
   let res = yield Promise.resolve( 4 )
@@ -36,6 +41,8 @@ let gen1 = function* ( arg, next ) {
 }
 
 let gen2 = function* ( arg ) {
+  // the last generator in the array not receive the
+  // next generator.
   count++
   let res = yield Promise.resolve( '54' )
   assert.equal( res, '54' )
@@ -43,9 +50,9 @@ let gen2 = function* ( arg ) {
 }
 coEvent.on( 'test', gen1, gen2 ) // returns itself, you can pass as many generators as you need queue
 coEvent.emit( 'test',{a:3}) // return a promise that is resolved when every generator is finish
-// every error is catched and the promise is rejected with that error. Also error event is amitted when this 
+// every error is catched and the promise is rejected with that error. Also error event is amitted when this
 // error is catched
-// every generator is called with arg={a:3} 
+// every generator is called with arg={a:3}
 
 assert.equal( count,2 )
 // count is equal to generator number
@@ -54,6 +61,18 @@ assert.equal( count,2 )
 // Also can use once method exposed to CoEvent to use generators wrapper
 // with co.
 ```
+### `Class Co-eventemitter`
+#### `Co-eventemitter([thisArg])`
+To instance the co-eventemitter you can pass a thisArg object what will be passed to every generator as thisArg.
+### `Instance Co-eventemitter`
+#### `co-eventemitter.on(String,Generator[,Generator...])`
+This method added the Generators passed to event Handler of event given(String). Returns itself.
+
+#### `co-eventemitter.on(String,Generator[,Generator...])`
+This method added the Generators passed to event Handler of event given(String) to be emitted only one time. Returns irself.
+
+#### `co-eventemitter.emit(String,Object[,Object...])`
+This method emit the event event given(String) and pass every Object argument to every constructor.
 
 
 # Testing
@@ -78,4 +97,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-

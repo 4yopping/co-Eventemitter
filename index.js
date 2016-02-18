@@ -85,6 +85,7 @@ let CoEvent = function ( ctx ) {
           .eventHandlerGen )
         this.emitter.removeAllListeners( event )
         this.emitter.once( event, this.events[ event ].eventHandlerFun )
+        return this
       }
       /**
        * @param {String} _event to be emitted {Array} arg to be send the listener
