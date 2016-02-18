@@ -33,14 +33,15 @@ let CoEvent = function ( ctx ) {
     var _this = this
       /**on method to be added to instance*/
       /**
-       * @param {String} event {Array} of generator to be used, can be too onle one generator
+       * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
        * @return {Boolean} is listener was added
        * @api public
        */
     this.on = function ( event, _eventHandler ) {
-        _eventHandler = arguments.length > 2 ? slice.call( arguments, 1 ) : [
-          _eventHandler
-        ]
+        _eventHandler = arguments.length > 2 ? slice.call( arguments, 1 ) :
+          Array.isArray( _eventHandler ) ? _eventHandler : [
+            _eventHandler
+          ]
         let eventHandler = toGenerator( _eventHandler )
         this.events[ event ] = this.events[ event ] || {}
         this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen !==
@@ -66,11 +67,16 @@ let CoEvent = function ( ctx ) {
         return this
       }
       /**
-       * @param {String} event {Array} of generator to be used, can be too onle one generator
+       * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
        * @return {Boolean} is listener was added once
        * @api public
        */
-    this.once = function ( event, eventHandler ) {
+    this.once = function ( event, _eventHandler ) {
+        _eventHandler = arguments.length > 2 ? slice.call( arguments, 1 ) :
+          Array.isArray( _eventHandler ) ? _eventHandler : [
+            _eventHandler
+          ]
+        let eventHandler = toGenerator( _eventHandler )
         this.events[ event ] = this.events[ event ] || {}
         this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen || [
           eventHandler
@@ -81,7 +87,7 @@ let CoEvent = function ( ctx ) {
         this.emitter.once( event, this.events[ event ].eventHandlerFun )
       }
       /**
-       * @param {String} event {Obejct} to be serd the listener
+       * @param {String} event {Obejct} arg to be send the listener
        * @return {Promise} to be resolved when every iterator finish or rejected
        * if a error happen
        * @api public
