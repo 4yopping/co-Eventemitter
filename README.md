@@ -2,6 +2,7 @@
 
 # co-eventemitter
 [![Build Status](https://travis-ci.org/Cereceres/co-Eventemitter.svg?branch=master)](https://travis-ci.org/Cereceres/co-Eventemitter)
+[![Inline docs](http://inch-ci.org/github/Cereceres/co-Eventemitter.svg?branch=master)](http://inch-ci.org/github/Cereceres/co-Eventemitter)
 
 
 co-eventemitter for JavaScript
@@ -90,7 +91,7 @@ In lieu of a formal style guide, take care to maintain the existing coding style
 ## Licence
 The MIT License (MIT)
 
-Copyright (c) 2015 Jesús Edel Cereceres with Andrés González and Marco Godínez as collaborators, 4yopping and all the related trademarks.
+Copyright (c) 2015 Jesús Edel Cereceres.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
