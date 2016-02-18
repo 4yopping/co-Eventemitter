@@ -3,6 +3,7 @@
 # co-eventemitter
 [![Build Status](https://travis-ci.org/Cereceres/co-Eventemitter.svg?branch=master)](https://travis-ci.org/Cereceres/co-Eventemitter)
 [![Inline docs](http://inch-ci.org/github/Cereceres/co-Eventemitter.svg?branch=master)](http://inch-ci.org/github/Cereceres/co-Eventemitter)
+[![Circle CI](https://circleci.com/gh/Cereceres/co-Eventemitter.svg?style=svg)](https://circleci.com/gh/Cereceres/co-Eventemitter)
 
 
 co-eventemitter for JavaScript
