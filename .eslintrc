@@ -1,6 +1,6 @@
 {
   "extends": "standard",
-  "rules":{
+  "rules": {
     "indent": [2, 2]
   },
   "env": {
@@ -8,4 +8,3 @@
     "mocha": true
   }
 }
-\/
