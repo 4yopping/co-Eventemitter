@@ -29,7 +29,7 @@ let CoEvent = function ( ctx ) {
       /**
        *  ctx to be used in every generator
        */
-    ctx = ctx || this
+    this.ctx = ctx || this
     var _this = this
       /**on method to be added to instance*/
       /**
@@ -53,7 +53,7 @@ let CoEvent = function ( ctx ) {
         this.emitter.removeAllListeners( event )
         let arrayOfeventHandlerGen = this.events[ event ].eventHandlerGen
         this.emitter.addListener( event, function ( arg, res, rej ) {
-          co( chaining( arg, arrayOfeventHandlerGen, 0 ) )
+          co.call( _this.ctx, chaining( arg, arrayOfeventHandlerGen, 0 ) )
             .then( function ( ) {
               /**The promse es resolved*/
               res( )
@@ -97,7 +97,11 @@ let CoEvent = function ( ctx ) {
         arg = arguments.length > 2 ?
           slice.call( arguments, 1 ) : [ arg ];
         return new Promise( function ( resolve, reject ) {
-          _this.emitter.emit( _event, arg, resolve, reject )
+          let test = _this.emitter.emit( _event, arg, resolve, reject )
+          if ( !test ) {
+            _this.emitter.emit( 'NotListener', arg )
+            resolve( arg )
+          }
         } );
       }
       /**
@@ -107,13 +111,15 @@ let CoEvent = function ( ctx ) {
        */
     chaining = function ( arg, array, index ) {
         if ( index < ( array.length - 2 ) ) {
-          return array[ index ].apply( ctx, arg.concat( chaining( arg, array,
+          return array[ index ].apply( _this.ctx, arg.concat( chaining( arg,
+            array,
             index +
             1 ) ) )
         } else {
-          return array[ index ].apply( ctx, arg.concat( array[ index + 1 ].apply(
-            ctx,
-            arg ) ) )
+          return array[ index ].apply( _this.ctx, arg.concat( array[ index + 1 ]
+            .apply(
+              _this.ctx,
+              arg ) ) )
         }
 
       }
@@ -129,7 +135,7 @@ let CoEvent = function ( ctx ) {
         } else if ( typeof fn === 'function' ) {
           return function* ( ) {
             let arg = slice.call( arguments, 0 )
-            yield toGenerator( fn.apply( ctx, arg ) )
+            yield toGenerator( fn.apply( _this.ctx, arg ) )
           }
         }
         return fn

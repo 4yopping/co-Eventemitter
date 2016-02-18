@@ -70,11 +70,20 @@ To instance the co-eventemitter you can pass a thisArg object what will be passe
 This method added the Generators passed to event Handler of event given(String). Returns itself.
 
 #### `co-eventemitter.once(String,Generator[,Generator...])`
-This method added the Generators passed to event Handler of event given(String) to be emitted only one time. Returns irself.
+This method added the Generators passed to event Handler of event given(String) to be emitted only one time. Returns itself.
 
 #### `co-eventemitter.emit(String,Object[,Object...])`
 This method emit the event event given(String) and pass every Object argument to every constructor.
 
+#### `co-eventemitter.emitter`
+Instance of EventEmitter, every change here affect to co-eventemitter instance.
+
+#### `co-eventemitter.events`
+Object where the keys are the events added and values are arrays with the listers generators to every event.
+
+#### `co-eventemitter.ctx`
+thisArg passed to every generator, this is the same passed to constructor and can be
+upgraded at any time.
 
 # Testing
 
