@@ -1,7 +1,7 @@
 'use strict'
 const EventEmitter = require( 'events' );
 const co = require( 'co' )
-let funBuilder, chaining, toGenerator
+let chaining, toGenerator
 
 
 /**
@@ -38,39 +38,42 @@ let CoEvent = function ( ctx ) {
        * @api public
        */
     this.on = function ( event, _eventHandler ) {
-        _eventHandler = arguments.length > 2 ? slice.call( arguments, 1 ) :
-          Array.isArray( _eventHandler ) ? _eventHandler : [
-            _eventHandler
-          ]
-        let eventHandler = toGenerator( _eventHandler )
-        this.events[ event ] = this.events[ event ] || {}
-        this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen !==
-          undefined ? this.events[ event ].eventHandlerGen : [ ]
-          /**The news generator are added*/
-        this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen
-          .concat( eventHandler )
-          /**The old generators are removed*/
-        this.emitter.removeAllListeners( event )
-        let arrayOfeventHandlerGen = this.events[ event ].eventHandlerGen
-        let test = this.emitter.addListener( event, function ( arg, res, rej ) {
-          co.call( _this.ctx, chaining( arg, arrayOfeventHandlerGen, 0 ) )
+      _eventHandler = arguments.length > 2 ? slice.call( arguments, 1 ) :
+        Array.isArray( _eventHandler ) ? _eventHandler : [
+          _eventHandler
+        ]
+      let eventHandler = toGenerator( _eventHandler )
+      this.events[ event ] = this.events[ event ] || {}
+      this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen !==
+        undefined ? this.events[ event ].eventHandlerGen : [ ]
+        /**The news generator are added*/
+      this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen
+        .concat( eventHandler )
+        /**The old generators are removed*/
+      this.emitter.removeAllListeners( event )
+      let arrayOfeventHandlerGen = this.events[ event ].eventHandlerGen
+      this.emitter.addListener( event, function ( arg, res, rej ) {
+        try {
+          co.call( _this.ctx, chaining( arg, arrayOfeventHandlerGen,
+              0 ) )
             .then( function ( ) {
               /**The promse es resolved*/
               res( )
             } )
-            .catch( function ( err ) {
-              /**If there are a error error event is ammited and promise es rejected*/
-              _this.emitter.emit( 'error', err )
-              rej( err )
-            } )
-        } )
-        return this
-      }
-      /**
-       * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
-       * @return {Boolean} is listener was added once
-       * @api public
-       */
+        } catch ( err ) {
+          /**If there are a error error event is ammited and promise es rejected*/
+          _this.emitter.emit( 'error', err )
+          rej( err )
+        }
+      } )
+      return this
+    }
+
+    /**
+     * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
+     * @return {Boolean} is listener was added once
+     * @api public
+     */
     this.once = function ( event, _eventHandler ) {
         _eventHandler = arguments.length > 2 ? slice.call( arguments, 1 ) :
           Array.isArray( _eventHandler ) ? _eventHandler : [
@@ -78,13 +81,25 @@ let CoEvent = function ( ctx ) {
           ]
         let eventHandler = toGenerator( _eventHandler )
         this.events[ event ] = this.events[ event ] || {}
-        this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen || [
+        this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen ||
           eventHandler
-        ]
-        this.events[ event ].eventHandlerFun = funBuilder( this.events[ event ]
-          .eventHandlerGen )
+
         this.emitter.removeAllListeners( event )
-        this.emitter.once( event, this.events[ event ].eventHandlerFun )
+        this.emitter.once( event, function ( arg, res, rej ) {
+          try {
+            co.call( _this.ctx, chaining( arg, this.events[ event ].eventHandlerGen,
+                0 ) )
+              .then( function ( ) {
+                /**The promse es resolved*/
+                res( )
+              } )
+          } catch ( err ) {
+            /**If there are a error error event is ammited and promise es rejected*/
+            _this.emitter.emit( 'error', err )
+            rej( err )
+          }
+
+        } )
         return this
       }
       /**
