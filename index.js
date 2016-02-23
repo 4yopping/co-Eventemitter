@@ -64,7 +64,6 @@ let CoEvent = function ( ctx ) {
               rej( err )
             } )
         } )
-        console.log( 'test=', test );
         return this
       }
       /**
