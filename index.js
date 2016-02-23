@@ -113,13 +113,14 @@ let CoEvent = function ( ctx ) {
     chaining = function ( arg, array, index ) {
         if ( array.length === 1 ) {
           return array[ index ].apply( _this.ctx, arg )
-        } else if ( index <= ( array.length - 2 ) ) {
+        } else if ( index < ( array.length - 2 ) ) {
           return array[ index ].apply( _this.ctx, arg.concat( chaining( arg,
             array,
             index +
             1 ) ) )
         } else {
-          return array[ index ].apply( _this.ctx, arg.concat( array[ index + 1 ]
+          return array[ index ].apply( _this.ctx, arg.concat( array[
+              ( index + 1 ) % array.length ]
             .apply(
               _this.ctx,
               arg ) ) )
