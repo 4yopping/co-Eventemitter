@@ -111,7 +111,9 @@ let CoEvent = function ( ctx ) {
        * @api private
        */
     chaining = function ( arg, array, index ) {
-        if ( index < ( array.length - 2 ) ) {
+        if ( array.length === 1 ) {
+          return array[ index ].apply( _this.ctx, arg )
+        } else if ( index <= ( array.length - 2 ) ) {
           return array[ index ].apply( _this.ctx, arg.concat( chaining( arg,
             array,
             index +
