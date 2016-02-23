@@ -26,6 +26,7 @@ let coEvent = new CoEvent() // you can pass a object to co-eventemitter construc
 Create
 
 ```js
+let count = 0
 //the generator are called with a arg and next, what is the next generator
 let gen1 = function* ( arg, next ) {
   // every generator is evaluated with the arguments
