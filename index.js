@@ -95,7 +95,7 @@ let CoEvent = function ( ctx ) {
               } )
           } catch ( err ) {
             /**If there are a error error event is ammited and promise es rejected*/
-            _this.emitter.emit( 'error', err )
+            _this.emit( 'error', err )
             rej( err )
           }
 
