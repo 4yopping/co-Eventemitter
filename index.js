@@ -81,9 +81,7 @@ let CoEvent = function ( ctx ) {
           ]
         let eventHandler = toGenerator( _eventHandler )
         this.events[ event ] = this.events[ event ] || {}
-        this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen ||
-          eventHandler
-
+        this.events[ event ].eventHandlerGen = eventHandler
         this.emitter.removeAllListeners( event )
         this.emitter.once( event, function ( arg, res, rej ) {
           try {
