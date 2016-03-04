@@ -23,7 +23,7 @@ describe( 'Test for Coevent', function ( ) {
     }
     this.Myemmiter.on( 'test', this.gen1, this.gen2 )
   } )
-  it( 'should send a post', function ( done ) {
+  it( 'should count the calls to emmiter', function ( done ) {
     this.Myemmiter.emit( 'test', 'hola' )
       .then( function ( ) {
         assert.equal( count, 2 )
