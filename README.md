@@ -86,6 +86,8 @@ Object where the keys are the events added and values are arrays with the lister
 #### `co-eventemitter.ctx`
 thisArg passed to every generator, this is the same passed to constructor and can be
 upgraded at any time.
+#### `Events`
+to every event listened with listeners added, a event is emitted when the promise is finished or a error is catched, this events are 'event+":done"' and  'event+":error"'
 
 # Testing
 

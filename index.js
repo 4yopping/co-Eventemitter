@@ -58,11 +58,12 @@ let CoEvent = function ( ctx ) {
               0 ) )
             .then( function ( ) {
               /**The promse es resolved*/
+              _this.emitter.emit( event + ':done' )
               res( )
             } )
         } catch ( err ) {
           /**If there are a error error event is ammited and promise es rejected*/
-          _this.emitter.emit( 'error', err )
+          _this.emitter.emit( event + ':error', err )
           rej( err )
         }
       } )
