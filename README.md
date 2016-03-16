@@ -1,8 +1,8 @@
 
 
 # co-eventemitter
-[![Build Status](https://travis-ci.org/Cereceres/co-Eventemitter.svg?branch=master)](https://travis-ci.org/Cereceres/co-Eventemitter)
 [![Inline docs](http://inch-ci.org/github/Cereceres/co-Eventemitter.svg?branch=master)](http://inch-ci.org/github/Cereceres/co-Eventemitter)
+[![Circle CI](https://circleci.com/gh/Cereceres/co-Eventemitter.svg?style=svg)](https://circleci.com/gh/Cereceres/co-Eventemitter)
 
 
 co-eventemitter for JavaScript
@@ -26,6 +26,7 @@ let coEvent = new CoEvent() // you can pass a object to co-eventemitter construc
 Create
 
 ```js
+let count = 0
 //the generator are called with a arg and next, what is the next generator
 let gen1 = function* ( arg, next ) {
   // every generator is evaluated with the arguments
@@ -65,16 +66,26 @@ assert.equal( count,2 )
 ### `Class Co-eventemitter`
 #### `Co-eventemitter([thisArg])`
 To instance the co-eventemitter you can pass a thisArg object what will be passed to every generator as thisArg.
+
 ### `Instance Co-eventemitter`
 #### `co-eventemitter.on(String,Generator[,Generator...])`
 This method added the Generators passed to event Handler of event given(String). Returns itself.
 
-#### `co-eventemitter.on(String,Generator[,Generator...])`
-This method added the Generators passed to event Handler of event given(String) to be emitted only one time. Returns irself.
+#### `co-eventemitter.once(String,Generator[,Generator...])`
+This method added the Generators passed to event Handler of event given(String) to be emitted only one time. Returns itself.
 
 #### `co-eventemitter.emit(String,Object[,Object...])`
-This method emit the event event given(String) and pass every Object argument to every constructor.
+This method emit the event event given(String) and pass every Object argument to every constructor. Returns a promise that is resolved when the every generator of event is finished or rejected if a error happen. If a error is through the error event is emitted or if a listener is not found the event "NotListener" also is through and the promise is resolved with the arguments passed when the event was emitted.
 
+#### `co-eventemitter.emitter`
+Instance of EventEmitter, every change here affect to co-eventemitter instance.
+
+#### `co-eventemitter.events`
+Object where the keys are the events added and values are arrays with the listers generators to every event.
+
+#### `co-eventemitter.ctx`
+thisArg passed to every generator, this is the same passed to constructor and can be
+upgraded at any time.
 
 # Testing
 
