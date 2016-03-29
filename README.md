@@ -75,7 +75,7 @@ This method added the Generators passed to event Handler of event given(String).
 This method added the Generators passed to event Handler of event given(String) to be emitted only one time. Returns itself.
 
 #### `co-eventemitter.emit(String,Object[,Object...])`
-This method emit the event event given(String) and pass every Object argument to every constructor. Returns a promise that is resolved when the every generator of event is finished or rejected if a error happen. If a error is through the error event is emitted or if a listener is not found the event "NotListener" also is through and the promise is resolved with the arguments passed when the event was emitted.
+This method emit the event event given(String) and pass every Object argument to every constructor. Returns a promise that is resolved when the every generator of event is finished or rejected if a error happen. If a error is through the error event is emitted or if a listener is not found the event "NotListener" also is through and the promise is resolved with the event name emitted.
 
 #### `co-eventemitter.emitter`
 Instance of EventEmitter, every change here affect to co-eventemitter instance.
@@ -86,9 +86,12 @@ Object where the keys are the events added and values are arrays with the lister
 #### `co-eventemitter.ctx`
 thisArg passed to every generator, this is the same passed to constructor and can be
 upgraded at any time.
-#### `Events`
-to every event listened with listeners added, a event is emitted when the promise is finished or a error is catched, this events are 'event+":done"' and  'event+":error"'
+### `Events`
+#### `:done` and `:error`
+to every event listened with listeners added a event is emitted when the promise is finished or a error is catched, this events are 'event+":done"' and  'event+":error"'
 
+#### `NotListener`
+This event is emitted when the event does not have listener and emitted wuth the event name. 
 # Testing
 
 Running the tests
