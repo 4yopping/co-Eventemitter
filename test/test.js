@@ -55,6 +55,15 @@ describe('Test for Coevent', function() {
       assert.equal(event, 'carne asada!!!')
       throw event + 'catched'
     })
+    this.Myemmiter.on('modified ctx', function*(arg) {
+      let res = yield Promise.resolve('God through')
+      assert.equal(res, 'God through')
+      assert.equal(arg, 2)
+      this.a = 2
+      throw 'error on modified ctx'
+
+    })
+
   })
   it('should count the calls to emmiter', function(done) {
     this.Myemmiter.emit('test', 'hola')
@@ -90,6 +99,25 @@ describe('Test for Coevent', function() {
           assert.equal(e, 'carne asada!!!catched')
           done()
         })
+
+    })
+
+
+  it(
+    'The ctx is passed and if is modified, the modification is exposed',
+
+    function(done) {
+      let ctx = {
+        a: 1
+      }
+      this.Myemmiter.ctx = ctx
+      this.Myemmiter.emit('modified ctx', 2).catch(
+        function(e) {
+          assert.equal(e, 'error on modified ctx')
+          assert(ctx.a === 2)
+          done()
+        })
+
 
     })
 })
