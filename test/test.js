@@ -33,13 +33,13 @@ describe('Test for Coevent', function() {
       assert(!arg)
       let res = yield Promise.resolve(0)
       assert.equal(res, 0)
-      throw 'error'
+      throw 'hola with error'
     })
 
     this.Myemmiter.on('testWithError:error', function*(error) {
       let res = yield Promise.resolve(1)
       assert.equal(res, 1)
-      assert.equal(error, 'error')
+      assert.equal(error, 'hola with error')
     })
 
     this.Myemmiter.on('test:done', function*(_r) {
@@ -47,6 +47,13 @@ describe('Test for Coevent', function() {
       let res = yield Promise.resolve(2)
       assert.equal(res, 2)
       i++
+    })
+    this.Myemmiter.on('NotListener', function*(event, arg) {
+      let res = yield Promise.resolve('al chingaso')
+      assert.equal(res, 'al chingaso')
+      assert.equal(arg, 'with tortillas of harina')
+      assert.equal(event, 'carne asada!!!')
+      throw event + 'catched'
     })
   })
   it('should count the calls to emmiter', function(done) {
@@ -65,12 +72,24 @@ describe('Test for Coevent', function() {
       })
   })
 
-  it('should emit the :error event and reject the promise returned',
+  it('should emit the .error event and reject the promise returned',
     function(done) {
       this.Myemmiter.emit('testWithError').catch(function(e) {
-        assert.equal(e, 'error')
+        assert.equal(e, 'hola with error')
         done()
       })
+
+    })
+
+  it(
+    'NotListener event have to be emmited when the event does not have listener',
+
+    function(done) {
+      this.Myemmiter.emit('carne asada!!!', 'with tortillas of harina').catch(
+        function(e) {
+          assert.equal(e, 'carne asada!!!catched')
+          done()
+        })
 
     })
 })
