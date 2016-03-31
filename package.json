@@ -3,6 +3,9 @@
   "version": "0.0.15",
   "description": "wrapper to co and Eventemitter",
   "main": "index.js",
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
   "directories": {
     "test": "test"
   },
