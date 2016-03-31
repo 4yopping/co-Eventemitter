@@ -53,7 +53,6 @@ let CoEvent = function(ctx) {
       this.emitter.removeAllListeners(event)
       let arrayOfeventHandlerGen = this.events[event].eventHandlerGen
       this.emitter.addListener(event, function(arg, res, rej) {
-
         co.call(_this.ctx, chaining(arg, arrayOfeventHandlerGen,
             0))
           .then(function(r) {
@@ -126,7 +125,9 @@ let CoEvent = function(ctx) {
        */
     this.emit = function(_event, arg) {
         arg = arguments.length > 2 ?
-          slice.call(arguments, 1) : [arg];
+          slice.call(arguments, 1) : [typeof arg === 'undefined' ? {} :
+            new Object(arg)
+          ];
         return new Promise(function(resolve, reject) {
           let test = _this.emitter.emit(_event, arg, resolve, reject)
           if (!test && _event !== 'NotListener' && !(_event.slice(-5) ===

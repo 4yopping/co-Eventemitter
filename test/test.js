@@ -28,7 +28,7 @@ describe('Test for Coevent', function() {
         return '_'
       }
     }
-    this.Myemmiter.on('test', this.gen1, this.gen2)
+    this.Myemmiter.on('test', [this.gen1, this.gen2])
     this.Myemmiter.on('testWithError', function*(arg) {
       assert(!arg)
       let res = yield Promise.resolve(0)
