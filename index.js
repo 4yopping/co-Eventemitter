@@ -29,13 +29,11 @@ let CoEvent = function ( ctx ) {
       /**
        *  ctx to be used in every generator
        */
-    this.ctx = ctx || this
+    this.ctx = ctx || {}
     var _this = this
-      /**on method to be added to instance*/
       /**
-       * @param {String} event {Array} _eventHandler of generator to be used,
-       * can be too onle one generator
-       * @return {Boolean} is listener was added
+       * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
+       * @return {Object} it self
        * @api public
        */
     this.on = function ( event, _eventHandler ) {
@@ -54,25 +52,31 @@ let CoEvent = function ( ctx ) {
       this.emitter.removeAllListeners( event )
       let arrayOfeventHandlerGen = this.events[ event ].eventHandlerGen
       this.emitter.addListener( event, function ( arg, res, rej ) {
-        try {
-          co.call( _this.ctx, chaining( arg, arrayOfeventHandlerGen,
-              0 ) )
-            .then( function ( _res ) {
-              /**The promse es resolved*/
-              res( _res )
-            } )
-        } catch ( err ) {
-          /**If there are a error error event is ammited and promise es rejected*/
-          _this.emitter.emit( 'error', err )
-          rej( err )
-        }
+        co.call( _this.ctx, chaining( arg, arrayOfeventHandlerGen,
+            0 ) )
+          .then( function ( r ) {
+            /**The promse es resolved*/
+            if ( !( event.slice( -5 ) === ':done' || event.slice( -6 ) ===
+                ':error' ) ) {
+              _this.emit( event + ':done', r )
+            }
+            res( r )
+          } )
+          .catch( function ( err ) {
+            /**If there are a error error event is ammited and promise es rejected*/
+            if ( !( event.slice( -5 ) === ':done' || event.slice( -6 ) ===
+                ':error' ) ) {
+              _this.emit( event + ':error', err )
+            }
+            rej( err )
+          } )
       } )
       return this
     }
 
     /**
      * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
-     * @return {Boolean} is listener was added once
+     * @return {Object} it self
      * @api public
      */
     this.once = function ( event, _eventHandler ) {
@@ -82,21 +86,34 @@ let CoEvent = function ( ctx ) {
           ]
         let eventHandler = toGenerator( _eventHandler )
         this.events[ event ] = this.events[ event ] || {}
-        this.events[ event ].eventHandlerGen = eventHandler
+        this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen !==
+          undefined ? this.events[ event ].eventHandlerGen : [ ]
+          /**The news generator are added*/
+        this.events[ event ].eventHandlerGen = this.events[ event ].eventHandlerGen
+          .concat( eventHandler )
+          /**The old generators are removed*/
         this.emitter.removeAllListeners( event )
         this.emitter.once( event, function ( arg, res, rej ) {
-          try {
-            co.call( _this.ctx, chaining( arg, this.events[ event ].eventHandlerGen,
-                0 ) )
-              .then( function ( _res ) {
-                /**The promse es resolved*/
-                res( _res )
-              } )
-          } catch ( err ) {
-            /**If there are a error error event is ammited and promise es rejected*/
-            _this.emit( 'error', err )
-            rej( err )
-          }
+          co.call( _this.ctx, chaining( arg, this.events[ event ].eventHandlerGen,
+              0 ) )
+            .then( function ( r ) {
+              /**The promse es resolved*/
+              if ( !( event.slice( -5 ) === ':done' || event.slice( -6 ) ===
+                  ':error' ) ) {
+                _this.emit( event + ':done', r )
+              }
+              res( r )
+            } )
+            .catch( function ( err ) {
+
+              /**If there are a error error event is ammited and promise es rejected*/
+              if ( !( event.slice( -5 ) === ':done' || event.slice( -6 ) ===
+                  ':error' ) ) {
+
+                _this.emit( event + ':error', err )
+              }
+              rej( err )
+            } )
 
         } )
         return this
@@ -109,12 +126,20 @@ let CoEvent = function ( ctx ) {
        */
     this.emit = function ( _event, arg ) {
         arg = arguments.length > 2 ?
-          slice.call( arguments, 1 ) : [ arg ];
+          slice.call( arguments, 1 ) : [ typeof arg === 'undefined' ? {} :
+            new Object( arg )
+          ];
         return new Promise( function ( resolve, reject ) {
           let test = _this.emitter.emit( _event, arg, resolve, reject )
-          if ( !test ) {
-            _this.emitter.emit( 'NotListener', arg )
-            resolve( arg )
+          if ( !test && _event !== 'NotListener' && !( _event.slice( -5 ) ===
+              ':done' || _event.slice( -6 ) ===
+              ':error' ) ) {
+            _this.emit( 'NotListener', _event, arg )
+              .then( resolve )
+              .catch(
+                reject )
+          } else if ( !test ) {
+            resolve( )
           }
         } );
       }
@@ -125,7 +150,11 @@ let CoEvent = function ( ctx ) {
        */
     chaining = function ( arg, array, index ) {
         if ( array.length === 1 ) {
-          return array[ index ].apply( _this.ctx, arg )
+          return array[ 0 ].apply( _this.ctx, arg )
+        } else if ( array.length === 2 ) {
+          return array[ 0 ].apply( _this.ctx, arg.concat( array[ 1 ].apply(
+            _this.ctx,
+            arg ) ) )
         } else if ( index < ( array.length - 2 ) ) {
           return array[ index ].apply( _this.ctx, arg.concat( chaining( arg,
             array,

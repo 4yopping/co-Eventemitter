@@ -1,7 +1,7 @@
 {
   "name": "co-eventemitter",
-  "version": "0.0.15",
   "description": "wrapper to co and Eventemitter",
+  "version": "0.0.17",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/test.js"
