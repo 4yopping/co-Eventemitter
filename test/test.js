@@ -8,9 +8,9 @@ let count = 0,
 describe('Test for Coevent', function() {
   this.timeout(10000)
   before(function() {
-    this.Myemmiter = new CoEvent(this)
+    this.Myemmiter = new CoEvent()
     this.gen1 = function*(arg, next) {
-
+      //assert(this instanceof CoEvent)
       count++
       let res = yield Promise.resolve(4)
       assert.equal(res, 4)
@@ -61,6 +61,7 @@ describe('Test for Coevent', function() {
 
   })
   it('should count the calls to emmiter', function(done) {
+    this.Myemmiter.ctx = this.Myemmiter
     this.Myemmiter.emit('test', 'hola')
       .then(function() {
         assert.equal(count, 2)

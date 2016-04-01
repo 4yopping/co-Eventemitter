@@ -2,6 +2,7 @@
 const EventEmitter = require('events');
 const co = require('co')
 let chaining, toGenerator
+let Ctx
 
 
 /**
@@ -29,7 +30,7 @@ let CoEvent = function(ctx) {
       /**
        *  ctx to be used in every generator
        */
-    this.ctx = ctx
+    this.ctx = ctx || {}
     var _this = this
       /**
        * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
@@ -51,10 +52,11 @@ let CoEvent = function(ctx) {
         /**The old generators are removed*/
       this.emitter.removeAllListeners(event)
       let arrayOfeventHandlerGen = this.events[event].eventHandlerGen
-      this.emitter.addListener(event, function(arg, res, rej) {
-        co.call(_this.ctx === undefined ? _this : _this.ctx, chaining(arg,
-          arrayOfeventHandlerGen,
-          0)).then(res).catch(rej)
+      this.emitter.on(event, function(arg, res, rej) {
+        co.apply(_this.ctx, [chaining(arg, arrayOfeventHandlerGen, 0)]).then(
+            res)
+          .catch(
+            rej)
       })
       return this
     }
@@ -79,7 +81,10 @@ let CoEvent = function(ctx) {
           /**The old generators are removed*/
         this.emitter.removeAllListeners(event)
         this.emitter.once(event, function(arg, res, rej) {
-          co.call(_this.ctx, chaining(arg, this.events[event].eventHandlerGen,
+          console.log('_this', _this);
+          Ctx = typeof _this.ctx === 'undefined' ? _this : _this.ctx
+          console.log('el contexto es ', Ctx);
+          co.call(Ctx, chaining(arg, this.events[event].eventHandlerGen,
               0))
             .then(function(r) {
               /**The promse es resolved*/
