@@ -2,7 +2,8 @@
 let assert = require('assert')
 let CoEvent = require('../index')
 let count = 0,
-  i = 0
+  i = 0,
+  j = 0
 
 
 describe('Test for Coevent', function() {
@@ -55,8 +56,20 @@ describe('Test for Coevent', function() {
       assert.equal(arg, 2)
       this.a = 2
       throw 'error on modified ctx'
+    })
 
+    this.Myemmiter.on('test.1', function*(arg) {
+      let res = yield Promise.resolve('2')
+      assert.equal(res, 'God through')
+      assert.equal(arg, 12)
+      j++
+    })
 
+    this.Myemmiter.on('test.2', function*(arg) {
+      let res = yield Promise.resolve('1')
+      assert.equal(res, 'God through')
+      assert.equal(arg, 12)
+      j++
     })
 
   })
@@ -92,6 +105,22 @@ describe('Test for Coevent', function() {
     function(done) {
       this.Myemmiter.emit('carne asada!!!', 'with tortillas of harina')
         .then(function() {
+          done()
+        })
+
+    })
+
+  it(
+    'The wildcard is acepted',
+
+    function(done) {
+      this.Myemmiter.emit('test.*', 12)
+        .then(function(r) {
+          console.log('resultado:', r);
+          assert(j === 2)
+          done()
+        }).catch(function(e) {
+          console.log('error', e);
           done()
         })
 

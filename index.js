@@ -101,15 +101,15 @@ let CoEvent = function(ctx, separator) {
         slice.call(arguments, 1) : [typeof arg === 'undefined' ? {} :
           typeof arg === 'object' ? arg : new Object(arg)
         ];
-      let its = _event.search(this.separator)
+      let its = _event.indexOf('*')
       if (its > 0) {
-        let promises = [],
-          event
-        for (var i = 0; i < this.events.length; i++) {
-          event = this.events[i]
-          wildcard(_event, event, this.separator) &&
-            (promises.push(new Promise(handlerPromiseGen(event, arg))))
+        let promises = []
+        for (var prop in this.events) {
+          console.log('event', prop);
+          wildcard(_event, prop, this.separator) &&
+            (promises.push(new Promise(handlerPromiseGen(prop, arg))))
         }
+        console.log('promises are', promises);
         return Promise.all(promises)
       } else {
         return new Promise(handlerPromiseGen(_event, arg))
