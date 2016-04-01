@@ -105,11 +105,9 @@ let CoEvent = function(ctx, separator) {
       if (its > 0) {
         let promises = []
         for (var prop in this.events) {
-          console.log('event', prop);
           wildcard(_event, prop, this.separator) &&
             (promises.push(new Promise(handlerPromiseGen(prop, arg))))
         }
-        console.log('promises are', promises);
         return Promise.all(promises)
       } else {
         return new Promise(handlerPromiseGen(_event, arg))

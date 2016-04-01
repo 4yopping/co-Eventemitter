@@ -112,15 +112,12 @@ describe('Test for Coevent', function() {
 
   it(
     'The wildcard is acepted',
-
     function(done) {
       this.Myemmiter.emit('test.*', 12)
         .then(function(r) {
-          console.log('resultado:', r);
           assert(j === 2)
           done()
         }).catch(function(e) {
-          console.log('error', e);
           done()
         })
 
