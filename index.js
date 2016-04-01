@@ -161,7 +161,8 @@ let CoEvent = function(ctx, separator) {
 
   handlerPromiseGen = function(_event, arg) {
     return function(resolve, reject) {
-      (!_this.emitter.emit(_event, arg, resolve, reject)) && resolve()
+      (!_this.emitter.emit(_event, arg, resolve, reject)) &&
+      resolve('NotListener')
     }
   }
 }
