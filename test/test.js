@@ -91,11 +91,9 @@ describe('Test for Coevent', function() {
 
     function(done) {
       this.Myemmiter.emit('carne asada!!!', 'with tortillas of harina')
-        .catch(
-          function(e) {
-            assert.equal(e, 'carne asada!!!catched')
-            done()
-          })
+        .then(function() {
+          done()
+        })
 
     })
 
