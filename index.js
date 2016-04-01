@@ -31,7 +31,6 @@ let CoEvent = function(ctx) {
        */
     this.ctx = ctx
     var _this = this
-      /**on method to be added to instance*/
       /**
        * @param {String} event {Array} _eventHandler of generator to be used, can be too onle one generator
        * @return {Object} it self
@@ -89,7 +88,8 @@ let CoEvent = function(ctx) {
                 _this.emit(event + ':done', r)
               }
               res(r)
-            }).catch(function(err) {
+            })
+            .catch(function(err) {
 
               /**If there are a error error event is ammited and promise es rejected*/
               if (!(event.slice(-5) === ':done' || event.slice(-6) ===

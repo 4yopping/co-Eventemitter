@@ -4,11 +4,13 @@ let CoEvent = require('../index')
 let count = 0,
   i = 0
 
+
 describe('Test for Coevent', function() {
   this.timeout(10000)
   before(function() {
     this.Myemmiter = new CoEvent(this)
     this.gen1 = function*(arg, next) {
+
       count++
       let res = yield Promise.resolve(4)
       assert.equal(res, 4)
@@ -54,6 +56,7 @@ describe('Test for Coevent', function() {
       this.a = 2
       throw 'error on modified ctx'
 
+
     })
 
   })
@@ -86,11 +89,12 @@ describe('Test for Coevent', function() {
     'NotListener event have to be emmited when the event does not have listener',
 
     function(done) {
-      this.Myemmiter.emit('carne asada!!!', 'with tortillas of harina').catch(
-        function(e) {
-          assert.equal(e, 'carne asada!!!catched')
-          done()
-        })
+      this.Myemmiter.emit('carne asada!!!', 'with tortillas of harina')
+        .catch(
+          function(e) {
+            assert.equal(e, 'carne asada!!!catched')
+            done()
+          })
 
     })
 
@@ -103,12 +107,13 @@ describe('Test for Coevent', function() {
         a: 1
       }
       this.Myemmiter.ctx = ctx
-      this.Myemmiter.emit('modified ctx', 2).catch(
-        function(e) {
-          assert.equal(e, 'error on modified ctx')
-          assert(ctx.a === 2)
-          done()
-        })
+      this.Myemmiter.emit('modified ctx', 2)
+        .catch(
+          function(e) {
+            assert.equal(e, 'error on modified ctx')
+            assert(ctx.a === 2)
+            done()
+          })
 
 
     })
