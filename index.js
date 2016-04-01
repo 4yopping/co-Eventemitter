@@ -29,7 +29,7 @@ let CoEvent = function(ctx) {
       /**
        *  ctx to be used in every generator
        */
-    this.ctx = ctx || this
+    this.ctx = ctx
     var _this = this
       /**on method to be added to instance*/
       /**
@@ -53,23 +53,9 @@ let CoEvent = function(ctx) {
       this.emitter.removeAllListeners(event)
       let arrayOfeventHandlerGen = this.events[event].eventHandlerGen
       this.emitter.addListener(event, function(arg, res, rej) {
-        co.call(_this.ctx, chaining(arg, arrayOfeventHandlerGen,
-            0))
-          .then(function(r) {
-            /**The promse es resolved*/
-            if (!(event.slice(-5) === ':done' || event.slice(-6) ===
-                ':error')) {
-              _this.emit(event + ':done', r)
-            }
-            res(r)
-          }).catch(function(err) {
-            /**If there are a error error event is ammited and promise es rejected*/
-            if (!(event.slice(-5) === ':done' || event.slice(-6) ===
-                ':error')) {
-              _this.emit(event + ':error', err)
-            }
-            rej(err)
-          })
+        co.call(_this.ctx === undefined ? _this : _this.ctx, chaining(arg,
+          arrayOfeventHandlerGen,
+          0)).then(res).catch(rej)
       })
       return this
     }
@@ -126,13 +112,11 @@ let CoEvent = function(ctx) {
     this.emit = function(_event, arg) {
         arg = arguments.length > 2 ?
           slice.call(arguments, 1) : [typeof arg === 'undefined' ? {} :
-            new Object(arg)
+            typeof arg === 'object' ? arg : new Object(arg)
           ];
         return new Promise(function(resolve, reject) {
           let test = _this.emitter.emit(_event, arg, resolve, reject)
-          if (!test && _event !== 'NotListener' && !(_event.slice(-5) ===
-              ':done' || _event.slice(-6) ===
-              ':error')) {
+          if (!test && _event !== 'NotListener') {
             _this.emit('NotListener', _event, arg).then(resolve).catch(
               reject)
           } else if (!test) {

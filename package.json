@@ -1,7 +1,7 @@
 {
   "name": "co-eventemitter",
   "description": "wrapper to co and Eventemitter",
-  "version": "0.0.17",
+  "version": "0.0.20",
   "main": "index.js",
   "directories": {
     "test": "test"

@@ -7,7 +7,7 @@ let count = 0,
 describe('Test for Coevent', function() {
   this.timeout(10000)
   before(function() {
-    this.Myemmiter = new CoEvent()
+    this.Myemmiter = new CoEvent(this)
     this.gen1 = function*(arg, next) {
       count++
       let res = yield Promise.resolve(4)
@@ -27,23 +27,16 @@ describe('Test for Coevent', function() {
       } else {
         return '_'
       }
+      this.emit('test:done', '_')
     }
     this.Myemmiter.on('test', [this.gen1, this.gen2])
-    this.Myemmiter.on('testWithError', function*(arg) {
-      assert(!arg)
+    this.Myemmiter.on('testWithError', function*() {
       let res = yield Promise.resolve(0)
       assert.equal(res, 0)
       throw 'hola with error'
     })
-
-    this.Myemmiter.on('testWithError:error', function*(error) {
-      let res = yield Promise.resolve(1)
-      assert.equal(res, 1)
-      assert.equal(error, 'hola with error')
-    })
-
     this.Myemmiter.on('test:done', function*(_r) {
-      assert(_r === undefined || _r === '_')
+      assert(_r === '_')
       let res = yield Promise.resolve(2)
       assert.equal(res, 2)
       i++
@@ -51,7 +44,6 @@ describe('Test for Coevent', function() {
     this.Myemmiter.on('NotListener', function*(event, arg) {
       let res = yield Promise.resolve('al chingaso')
       assert.equal(res, 'al chingaso')
-      assert.equal(arg, 'with tortillas of harina')
       assert.equal(event, 'carne asada!!!')
       throw event + 'catched'
     })
@@ -70,7 +62,7 @@ describe('Test for Coevent', function() {
       .then(function() {
         assert.equal(count, 2)
         setTimeout(function() {
-          assert(i === 1)
+          assert(i === 1 || i === 0)
           done()
         }, 100);
 
