@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 const co = require('co')
 let wildcard = require('wildcard');
 let chaining, toGenerator
-let handlerPromiseGen
+let handlerPromiseGen, l
 
 
 /**
@@ -75,9 +75,14 @@ let CoEvent = function(ctx, separator) {
         ]
       let eventHandler = toGenerator(_eventHandler)
       this.events[event] = this.events[event] || {}
-      this.events[event].eventHandlerGen = this.events[event].eventHandlerGen !==
-        undefined ? this.events[event].eventHandlerGen : []
-        /**The news generator are added*/
+      this.events[event].eventHandlerGen = this.events[event].eventHandlerGen || []
+      l = this.events[event].eventHandlerGen.length
+      this.indexes = this.indexes || []
+      for (var i = 0; i < _eventHandler.length; i++) {
+        this.indexes.push(l + i)
+      }
+
+      /**The news generator are added*/
       this.events[event].eventHandlerGen = this.events[event].eventHandlerGen
         .concat(eventHandler)
         /**The old generators are removed*/
@@ -85,7 +90,16 @@ let CoEvent = function(ctx, separator) {
       this.emitter.once(event, function(arg, res, rej) {
         co.call(_this.ctx, chaining(arg, this.events[event].eventHandlerGen,
             0))
-          .then(res)
+          .then(function(r) {
+            for (var i = 0; i < _this.indexes.length; i++) {
+              _this.events[event].eventHandlerGen.splice(_this.indexes[
+                i], 0)
+            }
+            if (!_this.events[event].eventHandlerGen.length) {
+              delete _this.events[event]
+            }
+            res(r)
+          })
           .catch(rej)
       })
       return this
@@ -102,7 +116,7 @@ let CoEvent = function(ctx, separator) {
           typeof arg === 'object' ? arg : new Object(arg)
         ];
       let its = _event.indexOf('*')
-      if (its > 0) {
+      if (its >= 0) {
         let promises = []
         for (var prop in this.events) {
           wildcard(_event, prop, this.separator) &&
