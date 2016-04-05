@@ -4,12 +4,9 @@ const co = require('co')
 let wildcard = require('wildcard');
 let chaining, toGenerator
 let handlerPromiseGen, l
-
-
-/**
- * slice() reference.
- */
-
+  /**
+   * slice() reference.
+   */
 let slice = Array.prototype.slice;
 /**
  * @param {Object} to be use as thisArg in every generator
@@ -56,6 +53,7 @@ let CoEvent = function(ctx, separator) {
     this.emitter.removeAllListeners(event)
     let arrayOfeventHandlerGen = this.events[event].eventHandlerGen
     this.emitter.on(event, function(arg, res, rej) {
+      this.ctx.event = event
       co.apply(_this.ctx, [chaining(arg, arrayOfeventHandlerGen, 0)])
         .then(res)
         .catch(rej)
@@ -122,7 +120,7 @@ let CoEvent = function(ctx, separator) {
           wildcard(_event, prop, this.separator) &&
             (promises.push(new Promise(handlerPromiseGen(prop, arg))))
         }
-        return Promise.all(promises)
+        return !promises.length ? Promise.all(promises) : Promise.resolve()
       } else {
         return new Promise(handlerPromiseGen(_event, arg))
       }
