@@ -1,5 +1,4 @@
 
-
 # co-eventemitter
 [![Inline docs](http://inch-ci.org/github/Cereceres/co-Eventemitter.svg?branch=master)](http://inch-ci.org/github/Cereceres/co-Eventemitter)
 [![Circle CI](https://circleci.com/gh/Cereceres/co-Eventemitter.svg?style=svg)](https://circleci.com/gh/Cereceres/co-Eventemitter)
@@ -18,7 +17,9 @@ $ npm install co-eventemitter
 ```js
 
 let CoEvent = require( 'co-eventemitter' )
-let coEvent = new CoEvent() // you can pass a object to co-eventemitter constructor
+let ctx = {a:2}
+let separator = '::'
+let coEvent = new CoEvent(ctx,separators) // you can pass a object to co-eventemitter constructor
 // that will be used or passed as thisArg to every generator.
 ```
 # Usage
@@ -62,6 +63,26 @@ assert.equal( count,2 )
 // where every method and property affect to CoEvent instance too.
 // Also can use once method exposed to CoEvent to use generators wrapper
 // with co.
+
+let handler_1 = function * (arg){
+    console.log(arg) // => 'hola'
+    let res = yield Promise.resolve(2)
+    console.log(this.a) // => 2
+ 
+}
+
+let handler_2 = function * (arg){
+    console.log(arg) // => 'hola'
+    let res = yield Promise.resolve(5)
+    console.log(res) // => 5
+    console.log(this.a) // => 2
+}
+// the wildcard are accepted, in this case the  events 'test::1', 'test::2' and 'test'
+coEvent.on( 'test::1',handler_1 )
+.on('test::2',handler_2)
+.emit('test::*','hola')
+
+
 ```
 ### `Class Co-eventemitter`
 #### `Co-eventemitter([thisArg])`
