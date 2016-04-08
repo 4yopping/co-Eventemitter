@@ -53,7 +53,7 @@ let CoEvent = function(ctx, separator) {
     this.emitter.removeAllListeners(event)
     let arrayOfeventHandlerGen = this.events[event].eventHandlerGen
     this.emitter.on(event, function(arg, res, rej) {
-      this.ctx.event = event
+      _this.ctx.event = event
       co.apply(_this.ctx, [chaining(arg, arrayOfeventHandlerGen, 0)])
         .then(res)
         .catch(rej)
@@ -93,6 +93,7 @@ let CoEvent = function(ctx, separator) {
               _this.events[event].eventHandlerGen.splice(_this.indexes[
                 i], 0)
             }
+            _this.indexes = []
             if (!_this.events[event].eventHandlerGen.length) {
               delete _this.events[event]
             }
