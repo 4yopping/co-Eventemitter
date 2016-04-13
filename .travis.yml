@@ -1,6 +1,13 @@
 language: node_js
+
 node_js:
-- '5.2.0'
+  - 5
+
+services:
+  - mongodb
 
 notifications:
-  slack: 4yopping:fdx98F0xBt6kemQORnLBnciP
+  slack: 4yopping:ALhrivGHquJzo5MPODfnRIvI
+
+script:
+  - npm test
